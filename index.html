@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Учебный проект — Облачные вычисления</title>
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: #ffffff;
+            --text-color: #1f2937;
+            --subtext-color: #6b7280;
+            --group-bg: #f9fafb;
+            --border-color: #e5e7eb;
+        }
+
+        body.dark-mode {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: #1e293b;
+            --text-color: #f3f4f6;
+            --subtext-color: #9ca3af;
+            --group-bg: #0f172a;
+            --border-color: #334155;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; transition: all 0.3s ease; }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--bg-gradient);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 35px;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.35);
+            text-align: center;
+            position: relative;
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: var(--group-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .badge {
+            background: #e0e7ff;
+            color: #4f46e5;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            color: var(--text-color);
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .info-group {
+            background: var(--group-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 14px 18px;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: var(--subtext-color);
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 15px;
+            color: var(--text-color);
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .btn-container {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #4338ca;
+        }
+
+        .btn-secondary {
+            background: var(--group-bg);
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            opacity: 0.8;
+        }
+
+        .status {
+            margin-top: 20px;
+            color: #10b981;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #10b981;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <button class="theme-toggle" onclick="toggleTheme()" title="Сменить тему">🌙</button>
+        <span class="badge">Практическая работа</span>
+        <h1>Облачный веб-сервер</h1>
+        
+        <div class="info-group">
+            <div class="info-label">Студент</div>
+            <div class="info-value">Даулетова Амина</div>
+        </div>
+        
+        <div class="info-group">
+            <div class="info-label">Группа</div>
+            <div class="info-value">ВТиПО 25/23</div>
+        </div>
+
+        <div class="info-group">
+            <div class="info-label">Серверное время</div>
+            <div class="info-value" id="clock">--:--:--</div>
+        </div>
+
+        <div class="btn-container">
+            <button class="btn btn-primary" onclick="alert('Сервер работает стабильно!')">Проверить статус</button>
+            <button class="btn btn-secondary" onclick="copyInfo()">Скопировать данные</button>
+        </div>
+
+        <div class="status">
+            <span class="status-dot"></span> GitHub Pages (Онлайн)
+        </div>
+    </div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('ru-RU');
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const btn = document.querySelector('.theme-toggle');
+            btn.innerText = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        }
+
+        function copyInfo() {
+            navigator.clipboard.writeText('Студент: Даулетова Амина, Группа: ВТиПО 25/23');
+            alert('Данные скопированы в буфер обмена!');
+        }
+    </script>
+</body>
+</html>
